@@ -47,7 +47,7 @@ else
     builder.Services.AddDbContext<AppDbContext>(options =>
         {
             options.UseSqlServer(connectionString);
-            options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+            // options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         }
     );
 }
@@ -94,13 +94,26 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 
-builder.Services.AddTransient<ICommandeService, CommandeService>();
-builder.Services.AddTransient<IClientService, ClientService>();
-builder.Services.AddTransient<IProduitService, ProduitService>();
-builder.Services.AddTransient<ILigneCommandeService, LigneCommandeService>();
-builder.Services.AddTransient<ICategorieService, CategorieService>();
-builder.Services.AddTransient<IBaseRepository<Categorie>, BaseRepository<Categorie>>();
-builder.Services.AddTransient<IAuthService, AuthService>();
+builder.Services.AddScoped<ICommandeService, CommandeService>();
+builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddScoped<IProduitService, ProduitService>();
+builder.Services.AddScoped<ILigneCommandeService, LigneCommandeService>();
+builder.Services.AddScoped<ICategorieService, CategorieService>();
+builder.Services.AddScoped<IBaseRepository<Categorie>, BaseRepository<Categorie>>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontendApp",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:4200")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials();
+        });
+});
+
 
 builder.Services.AddControllers()
 .AddJsonOptions(opt =>
@@ -158,7 +171,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors("AllowFrontendApp");
 app.UseAuthentication();
 app.UseAuthorization();
 

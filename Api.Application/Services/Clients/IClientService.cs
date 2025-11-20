@@ -7,7 +7,7 @@ public interface IClientService
 {
     Task<Client?> GetByIdAsync(int id);
     Task<IEnumerable<Client>> GetAllAsync();
-    Task<Client> CreateAsync(Client client);
+    Task<Client?> CreateAsync(Client client);
     Task<Client?> UpdateAsync(int id,ClientBaseDto client);
     Task<bool> DeleteAsync(int id);
 }

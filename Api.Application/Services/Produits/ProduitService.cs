@@ -9,8 +9,9 @@ public class ProduitService( IUnitOfWork unitOfWork ) : IProduitService
 {
     private readonly IUnitOfWork _unityOfWork = unitOfWork;
 
-    public async Task<Produit> CreateAsync(ProduitBaseDto dto)
+    public async Task<Produit?> CreateAsync(ProduitBaseDto dto)
     {
+        
         var produit = new Produit
         {
             Nom = dto.Nom,
@@ -20,9 +21,9 @@ public class ProduitService( IUnitOfWork unitOfWork ) : IProduitService
             CategorieId = dto.CategorieId
         };
 
-        await _unityOfWork.Produits.AddAsync(produit);
+        var createdProduit = await _unityOfWork.Produits.AddAsync(produit);
         await _unityOfWork.SaveChangesAsync();
-        return produit;
+        return createdProduit;
     }
 
     public async Task<bool> DeleteAsync(int id)
@@ -30,7 +31,7 @@ public class ProduitService( IUnitOfWork unitOfWork ) : IProduitService
         var produit = await _unityOfWork.Produits.GetByIdAsync(id);
         if (produit == null) return false;
 
-        _unityOfWork.Produits.DeleteAsync(produit);
+        await _unityOfWork.Produits.DeleteAsync(produit);
         await _unityOfWork.SaveChangesAsync();
         return true;
     }
@@ -45,10 +46,10 @@ public class ProduitService( IUnitOfWork unitOfWork ) : IProduitService
         return await _unityOfWork.Produits.GetByIdAsync(id);
     }
 
-    public async Task<bool> UpdateAsync(int id, ProduitBaseDto dto)
+    public async Task<Produit?> UpdateAsync(int id, ProduitBaseDto dto)
     {
         var produit = await _unityOfWork.Produits.GetByIdAsync(id);
-        if (produit == null) return false;
+        if (produit == null) return null;
 
         produit.Nom = dto.Nom;
         produit.Description = dto.Description;
@@ -56,8 +57,8 @@ public class ProduitService( IUnitOfWork unitOfWork ) : IProduitService
         produit.Stock = dto.Stock;
         produit.CategorieId = dto.CategorieId;
 
-        _unityOfWork.Produits.UpdateAsync(produit);
+        var updatedProduit = await _unityOfWork.Produits.UpdateAsync(produit);
         await _unityOfWork.SaveChangesAsync();
-        return true;
+        return updatedProduit;
     }
 }

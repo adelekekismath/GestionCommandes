@@ -48,12 +48,12 @@ public class LigneCommandeController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody] LigneCommandeUpdateDto dto)
     {
-        var updated = await _ligneCommandeService.UpdateAsync(id, dto);
+        var updatedLigneCommande = await _ligneCommandeService.UpdateAsync(id, dto);
         if (!updated)
         {
             return NotFound();
         }
-        return NoContent();
+        return Ok(updatedLigneCommande);
     }
 
     [HttpDelete("{id}")]

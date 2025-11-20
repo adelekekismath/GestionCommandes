@@ -10,6 +10,7 @@ namespace Api.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
+[AllowAnonymous]
 public class CommandesController: ControllerBase
 {
     private readonly ICommandeService _service;

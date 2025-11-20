@@ -6,7 +6,7 @@ public interface ILigneCommandeService
 {
     Task<IEnumerable<LigneCommande>> GetAllAsync();
     Task<LigneCommande?> GetByIdAsync(int id);
-    Task<LigneCommande> CreateAsync(LigneCommandeCreateDto dto);
-    Task<bool> UpdateAsync(int id, LigneCommandeUpdateDto dto);
+    Task<LigneCommande?> CreateAsync(LigneCommandeCreateDto dto);
+    Task<LigneCommande?> UpdateAsync(int id, LigneCommandeUpdateDto dto);
     Task<bool> DeleteAsync(int id);
 }

@@ -54,7 +54,7 @@ public class CategorieController: ControllerBase
         {
             return NotFound();
         }
-        return NoContent();
+        return Ok(updated);
     }
 
     [HttpDelete("{id}")]

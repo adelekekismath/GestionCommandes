@@ -16,7 +16,7 @@ public class ClientService(IUnitOfWork unitOfWork) : IClientService
     public async Task<IEnumerable<Client>> GetAllAsync()
         => await _unityOfWork.Clients.GetAllAsync();
 
-    public async Task<Client> CreateAsync(Client client)
+    public async Task<Client?> CreateAsync(Client client)
     {
         await _unityOfWork.Clients.AddAsync(client);
         await _unityOfWork.SaveChangesAsync();
@@ -34,10 +34,10 @@ public class ClientService(IUnitOfWork unitOfWork) : IClientService
         client.Telephone = dto.Telephone;
         client.Adresse = dto.Adresse;
 
-        _unityOfWork.Clients.UpdateAsync(client);
+        var updatedClient = _unityOfWork.Clients.UpdateAsync(client);
         await _unityOfWork.SaveChangesAsync();
 
-        return client;
+        return updatedClient;
     }
 
     public async Task<bool> DeleteAsync(int id)

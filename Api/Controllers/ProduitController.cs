@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Api.Application.Services.Produits;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 
 [ApiController]
@@ -14,6 +15,7 @@ using Api.Application.Services.Produits;
 [Authorize]
 public class ProduitController : ControllerBase
 {
+    private readonly int ok;
     private readonly IProduitService _produitService;
 
     public ProduitController(IProduitService produitService)
@@ -50,11 +52,11 @@ public class ProduitController : ControllerBase
     public async Task<IActionResult> Update(int id, [FromBody] ProduitBaseDto dto)
     {
         var updated = await _produitService.UpdateAsync(id, dto);
-        if (!updated)
+        if (updated == null)
         {
             return NotFound();
         }
-        return NoContent();
+        return Ok(updated);
     }
 
     [HttpDelete("{id}")]

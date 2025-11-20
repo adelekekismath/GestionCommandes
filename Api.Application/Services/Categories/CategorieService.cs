@@ -21,7 +21,7 @@ public class CategorieService(IUnitOfWork unitOfWork): ICategorieService
         return await _unityOfWork.Categories.GetByIdAsync(id);
     }
 
-    public async Task<Categorie> CreateAsync(CategorieBaseDto dto)
+    public async Task<Categorie?> CreateAsync(CategorieBaseDto dto)
     {
         var categorie = new Categorie
         {
@@ -34,17 +34,17 @@ public class CategorieService(IUnitOfWork unitOfWork): ICategorieService
         return categorie;
     }
 
-    public async Task<bool> UpdateAsync(int id, CategorieBaseDto dto)
+    public async Task<Categorie?> UpdateAsync(int id, CategorieBaseDto dto)
     {
         var categorie = await _unityOfWork.Categories.GetByIdAsync(id);
-        if (categorie is null) return false;
+        if (categorie is null) return null;
 
         categorie.Nom = dto.Nom;
         categorie.Description = dto.Description;
 
-        _unityOfWork.Categories.UpdateAsync(categorie);
+        var updatedCategorie = _unityOfWork.Categories.UpdateAsync(categorie);
         await _unityOfWork.SaveChangesAsync();
-        return true;
+        return updatedCategorie;
     }
 
     public async Task<bool> DeleteAsync(int id)

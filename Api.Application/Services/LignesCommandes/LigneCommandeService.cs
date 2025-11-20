@@ -21,7 +21,7 @@ public class LigneCommandeService(IUnitOfWork unitOfWork): ILigneCommandeService
         return await _unityOfWork.LigneCommandes.GetByIdAsync(id);
     }
 
-    public async Task<LigneCommande> CreateAsync(LigneCommandeCreateDto dto)
+    public async Task<LigneCommande?> CreateAsync(LigneCommandeCreateDto dto)
     {
         var ligneCommande = new LigneCommande
         {
@@ -36,18 +36,18 @@ public class LigneCommandeService(IUnitOfWork unitOfWork): ILigneCommandeService
         return ligneCommande;
     }
 
-    public async Task<bool> UpdateAsync(int id, LigneCommandeUpdateDto dto)
+    public async Task<LigneCommande?> UpdateAsync(int id, LigneCommandeUpdateDto dto)
     {
         var ligneCommande = await _unityOfWork.LigneCommandes.GetByIdAsync(id);
-        if (ligneCommande is null) return false;
+        if (ligneCommande is null) return null;
 
         ligneCommande.ProduitId = dto.ProduitId;
         ligneCommande.Quantite = dto.Quantite;
         ligneCommande.PrixUnitaire = dto.PrixUnitaire;
 
-        _unityOfWork.LigneCommandes.UpdateAsync(ligneCommande);
+        var updatedLigneCommande =_unityOfWork.LigneCommandes.UpdateAsync(ligneCommande);
         await _unityOfWork.SaveChangesAsync();
-        return true;
+        return updatedLigneCommande;
     }
 
     public async Task<bool> DeleteAsync(int id)
