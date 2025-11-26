@@ -25,4 +25,16 @@ public class BaseRepository<T>(AppDbContext db) : IBaseRepository<T> where T : c
     {
         DbSet.Remove(entity);
     }
+    public async Task<T?> FindAsync(Func<T, bool> predicate)
+    {
+        return DbSet.AsEnumerable().FirstOrDefault(predicate);
+    }
+    public async Task<int> CountAsync()
+    {
+        return await DbSet.CountAsync();
+    }
+    public async Task<int> CountAsync(Func<T, bool> predicate)
+    {
+        return DbSet.AsEnumerable().Count(predicate);
+    }
 }

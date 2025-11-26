@@ -69,9 +69,14 @@ public class AuthController: ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] UserCreateDto userDto)
     {
-        var user = await _authService.RegisterAsync(userDto);
-
-        return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
+        try {
+            var user = await _authService.RegisterAsync(userDto);
+            return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
+        } 
+        catch (InvalidOperationException ex){
+            return BadRequest(new { message = ex.Message }); 
+        }
+        
     }
 
 

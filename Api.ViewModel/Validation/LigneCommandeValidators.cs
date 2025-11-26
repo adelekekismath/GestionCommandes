@@ -8,8 +8,6 @@ public class LigneCommandeCreateValidator : AbstractValidator<LigneCommandeCreat
     {
         RuleFor(x => x.Quantite)
             .GreaterThan(0).WithMessage("La quantité doit être supérieure à zéro.");
-        RuleFor(x => x.PrixUnitaire)
-            .GreaterThan(0).WithMessage("Le prix unitaire doit être supérieur à zéro.");
         RuleFor(x => x.CommandeId)
             .NotEmpty().WithMessage("L'ID de la commande est requis.");
         RuleFor(x => x.ProduitId)
@@ -24,9 +22,5 @@ public class LigneCommandeUpdateValidator: AbstractValidator<LigneCommandeUpdate
     {
         RuleFor(x => x.Quantite)
             .GreaterThan(0).WithMessage("La quantité doit être supérieure à zéro.");
-        RuleFor(x => x.PrixUnitaire)
-            .GreaterThan(0).WithMessage("Le prix unitaire doit être supérieur à zéro.");
-        RuleFor(x => x.ProduitId)
-            .NotEmpty().WithMessage("L'ID du produit est requis.");
     }
 }

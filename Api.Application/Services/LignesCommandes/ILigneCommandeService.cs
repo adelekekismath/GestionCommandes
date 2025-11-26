@@ -9,4 +9,5 @@ public interface ILigneCommandeService
     Task<LigneCommande?> CreateAsync(LigneCommandeCreateDto dto);
     Task<LigneCommande?> UpdateAsync(int id, LigneCommandeUpdateDto dto);
     Task<bool> DeleteAsync(int id);
+    Task<LigneCommande?> CommandeAndProduitExistInLigneCommandeAsync(int commandeId, int produitId);
 }

@@ -10,7 +10,6 @@ namespace Api.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-[AllowAnonymous]
 public class CommandesController: ControllerBase
 {
     private readonly ICommandeService _service;
@@ -34,16 +33,27 @@ public class CommandesController: ControllerBase
     [HttpPost]
     public async Task<ActionResult<Commande>> Create([FromBody] CommandeCreateDto dto)
     {
-        var createdCommande = await _service.CreateAsync(dto);
-        return CreatedAtAction(nameof(GetById), new { id = createdCommande.Id }, createdCommande);
+        try
+        {
+            var commande = await _service.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id = commande.Id }, commande);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
     }
 
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(int id, [FromBody] CommandeUpdateDto dto)
     {
         var updatedCommande = await _service.UpdateAsync(id, dto);
-        if (!updatedCommande) return NotFound();
-        return Ok();
+        if (updatedCommande is null) return NotFound();
+        return Ok(updatedCommande);
     }
     
     [HttpDelete("{id:int}")]

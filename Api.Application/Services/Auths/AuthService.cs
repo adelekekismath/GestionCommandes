@@ -31,7 +31,6 @@ public class AuthService : IAuthService
         if (user == null || !await _userManager.CheckPasswordAsync(user, request.Password))
             return null;
 
-        Console.WriteLine($"User {user.Email} authenticated successfully.");
 
         var userRoles = await _userManager.GetRolesAsync(user);
         var role = userRoles.FirstOrDefault() ?? "User";
@@ -66,6 +65,11 @@ public class AuthService : IAuthService
 
     public async Task<IdentityUser?> RegisterAsync(UserCreateDto user)
     {
+        var existedUser = await _userManager.FindByNameAsync(user.Username);
+        var existedEmail = await _userManager.FindByEmailAsync(user.Email);
+        if(existedUser != null || existedEmail != null)
+            throw new InvalidOperationException("Cet utilisateur existe déjà, veuillez-vous connectez!");
+
         var newUser = new IdentityUser
         {
             UserName = user.Username,

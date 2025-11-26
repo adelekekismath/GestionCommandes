@@ -61,4 +61,34 @@ public class ProduitService( IUnitOfWork unitOfWork ) : IProduitService
         await _unityOfWork.SaveChangesAsync();
         return updatedProduit;
     }
+
+    public async Task<bool> IsStockSufficientAsync(int produitId, int quantite)
+    {
+        var produit = await _unityOfWork.Produits.GetByIdAsync(produitId);
+        if (produit == null) return false;
+
+        return produit.Stock >= quantite;
+    }
+
+    public async Task<bool> ReduceStockAsync(int produitId, int quantite)
+    {
+        var produit = await _unityOfWork.Produits.GetByIdAsync(produitId);
+        if (produit == null || produit.Stock < quantite) return false;
+
+        produit.Stock -= quantite;
+        await _unityOfWork.Produits.UpdateAsync(produit);
+        await _unityOfWork.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<bool> IncreaseStockAsync(int produitId, int quantite)
+    {
+        var produit = await _unityOfWork.Produits.GetByIdAsync(produitId);
+        if (produit == null) return false;
+
+        produit.Stock += quantite;
+        await _unityOfWork.Produits.UpdateAsync(produit);
+        await _unityOfWork.SaveChangesAsync();
+        return true;
+    }
 }

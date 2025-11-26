@@ -23,6 +23,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Api.ViewModel.Validation;
 using Api.Domain.Entities;
+using Api.Application.Services.Dashboard;
 
 [assembly: InternalsVisibleTo("Api.Tests")]
 
@@ -99,6 +100,7 @@ builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IProduitService, ProduitService>();
 builder.Services.AddScoped<ILigneCommandeService, LigneCommandeService>();
 builder.Services.AddScoped<ICategorieService, CategorieService>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddScoped<IBaseRepository<Categorie>, BaseRepository<Categorie>>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 

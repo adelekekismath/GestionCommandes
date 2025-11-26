@@ -4,6 +4,7 @@ using Api.Databases.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Api.Databases.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251121094601_remove_numeroCommande_column")]
+    partial class remove_numeroCommande_column
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,6 +96,10 @@ namespace Api.Databases.Migrations
                     b.Property<DateTime>("DateCommande")
                         .HasColumnType("datetime2");
 
+                    b.Property<decimal>("MontantTotal")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("Statut")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -103,7 +110,7 @@ namespace Api.Databases.Migrations
 
                     b.ToTable("Commandes", t =>
                         {
-                            t.HasCheckConstraint("CK_Commande_Statut_Valid", "STATUT IN ('EnAttente', 'EnCours', 'Livree', 'Annulee', 'Expediee')");
+                            t.HasCheckConstraint("CK_Commande_Statut_Valid", "STATUT IN ('EnAttente', 'EnCours', 'Livrée', 'Annulée', 'Expédiée')");
                         });
                 });
 

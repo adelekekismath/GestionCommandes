@@ -15,8 +15,8 @@ public static class StatutCommandeHelper
     [
         "EnAttente",
         "EnCours",
-        "Livrée",
-        "Annulée",
-        "Expédiée"
+        "Livree",
+        "Annulee",
+        "Expediee"
     ];
 }

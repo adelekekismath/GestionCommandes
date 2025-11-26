@@ -42,7 +42,7 @@ public class CategorieService(IUnitOfWork unitOfWork): ICategorieService
         categorie.Nom = dto.Nom;
         categorie.Description = dto.Description;
 
-        var updatedCategorie = _unityOfWork.Categories.UpdateAsync(categorie);
+        var updatedCategorie = await _unityOfWork.Categories.UpdateAsync(categorie);
         await _unityOfWork.SaveChangesAsync();
         return updatedCategorie;
     }

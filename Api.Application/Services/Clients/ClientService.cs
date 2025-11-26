@@ -34,7 +34,7 @@ public class ClientService(IUnitOfWork unitOfWork) : IClientService
         client.Telephone = dto.Telephone;
         client.Adresse = dto.Adresse;
 
-        var updatedClient = _unityOfWork.Clients.UpdateAsync(client);
+        var updatedClient = await _unityOfWork.Clients.UpdateAsync(client);
         await _unityOfWork.SaveChangesAsync();
 
         return updatedClient;

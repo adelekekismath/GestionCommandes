@@ -50,7 +50,7 @@ public class CategorieController: ControllerBase
     public async Task<IActionResult> Update(int id, [FromBody] CategorieBaseDto dto)
     {
         var updated = await _categorieService.UpdateAsync(id, dto);
-        if (!updated)
+        if (updated == null)
         {
             return NotFound();
         }

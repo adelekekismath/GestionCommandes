@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Api.Application.Services.LignesCommandes;
+using Api.Application.Services.Commandes;
+using Api.Application.Services.Produits;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -14,10 +16,15 @@ using Api.Application.Services.LignesCommandes;
 public class LigneCommandeController : ControllerBase
 {
     private readonly ILigneCommandeService _ligneCommandeService;
+    private readonly ICommandeService _commandeService;
+    private readonly IProduitService _produitService;
 
-    public LigneCommandeController(ILigneCommandeService ligneCommandeService)
+    public LigneCommandeController(ILigneCommandeService ligneCommandeService,
+     ICommandeService commandeService,
+     IProduitService produitService)
     {
         _ligneCommandeService = ligneCommandeService;
+        _commandeService = commandeService;
     }
 
     [HttpGet]
@@ -40,16 +47,31 @@ public class LigneCommandeController : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] LigneCommandeCreateDto dto)
-    {
-        var createdLigneCommande = await _ligneCommandeService.CreateAsync(dto);
-        return CreatedAtAction(nameof(GetById), new { id = createdLigneCommande.Id }, createdLigneCommande);
+    {   
+        try
+        {
+            var createdLigneCommande = await _ligneCommandeService.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id = createdLigneCommande.Id }, createdLigneCommande);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody] LigneCommandeUpdateDto dto)
     {
         var updatedLigneCommande = await _ligneCommandeService.UpdateAsync(id, dto);
-        if (!updated)
+        if (updatedLigneCommande == null)
         {
             return NotFound();
         }
