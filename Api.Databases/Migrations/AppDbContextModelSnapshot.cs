@@ -30,6 +30,10 @@ namespace Api.Databases.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Nom")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -89,14 +93,6 @@ namespace Api.Databases.Migrations
                     b.Property<DateTime>("DateCommande")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("MontantTotal")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("NumeroCommande")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Statut")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -107,7 +103,7 @@ namespace Api.Databases.Migrations
 
                     b.ToTable("Commandes", t =>
                         {
-                            t.HasCheckConstraint("CK_Commande_Statut_Valid", "STATUT IN ('EnAttente', 'EnCours', 'Livrée', 'Annulée', 'Expédiée')");
+                            t.HasCheckConstraint("CK_Commande_Statut_Valid", "STATUT IN ('EnAttente', 'EnCours', 'Livree', 'Annulee', 'Expediee')");
                         });
                 });
 

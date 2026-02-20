@@ -2,7 +2,7 @@ namespace Api.Domain.Entities;
 
 public class LigneCommande
 {
-    public int Id;
+    public int Id { get; set; }
     public int Quantite { get; set; }
     public float PrixUnitaire { get; set; }
 

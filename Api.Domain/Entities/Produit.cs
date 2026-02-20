@@ -11,6 +11,6 @@ public class Produit
 
     public int CategorieId { get; set; }
     public Categorie Categorie { get; set; } = default!;
-    public List<LigneCommande> LignesCommande { get; set; } = [];
+    public ICollection<LigneCommande> LignesCommande { get; set; } = [];
 
 }

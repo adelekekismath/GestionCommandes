@@ -8,9 +8,6 @@ public class CommandeConfiguration : IEntityTypeConfiguration<Commande>
 {
     public void Configure(EntityTypeBuilder<Commande> builder)
     {
-        builder.Property(c => c.MontantTotal)
-        .HasPrecision(18, 2);
-
         builder.HasMany(c => c.LignesCommande)
         .WithOne(c => c.Commande)
         .HasForeignKey(c => c.CommandeId)
@@ -18,7 +15,7 @@ public class CommandeConfiguration : IEntityTypeConfiguration<Commande>
 
         builder.ToTable(t => t.HasCheckConstraint(
             "CK_Commande_Statut_Valid",
-            "STATUT IN ('EnAttente', 'EnCours', 'Livrée', 'Annulée', 'Expédiée')"
+            "STATUT IN ('EnAttente', 'EnCours', 'Livree', 'Annulee', 'Expediee')"
 
         ));
     }
