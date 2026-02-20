@@ -47,7 +47,7 @@ else
 {
     builder.Services.AddDbContext<AppDbContext>(options =>
         {
-            options.UseSqlServer(connectionString);
+            options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
             // options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         }
     );

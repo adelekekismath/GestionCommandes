@@ -10,4 +10,5 @@ public interface ICommandeService
     Task<Commande> CreateAsync(CommandeCreateDto commande);
     Task<Commande?> UpdateAsync(int id,CommandeUpdateDto commande);
     Task<bool> DeleteAsync(int id);
+    Task<IEnumerable<TotalCommandeDto>> GetTotalCommandesAsync();
 }

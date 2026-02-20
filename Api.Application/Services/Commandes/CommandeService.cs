@@ -57,4 +57,9 @@ public class CommandeService(IUnitOfWork unitOfWork) : ICommandeService
         await _unityOfWork.SaveChangesAsync();
         return true;
     }
+
+    public async Task<IEnumerable<TotalCommandeDto>> GetTotalCommandesAsync()
+    {
+        return await _unityOfWork.LigneCommandes.GetTotalCommandesByCommandeIdAsync();
+    }
 }

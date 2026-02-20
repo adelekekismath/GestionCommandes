@@ -1,4 +1,5 @@
 using Api.Databases.Repositories.BaseRepository;
+using Api.Databases.Repositories.LigneCommandeRepository;
 using Api.Domain.Entities;
 
 namespace Api.Databases.UnitOfWork;
@@ -9,6 +10,6 @@ public interface IUnitOfWork: IDisposable{
     IBaseRepository<Categorie> Categories { get; }
     IBaseRepository<Commande> Commandes{ get; }
     IBaseRepository<Produit> Produits{ get; }
-    IBaseRepository<LigneCommande> LigneCommandes{ get; }
+    ILigneCommandeRepository LigneCommandes{ get; }
     Task<int> SaveChangesAsync();
 }

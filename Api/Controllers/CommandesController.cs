@@ -63,4 +63,11 @@ public class CommandesController: ControllerBase
         if (!deleted) return NotFound();
         return NoContent();
     }
+
+    [HttpGet("totals")]
+    public async Task<ActionResult<IEnumerable<TotalCommandeDto>>> GetTotalCommandes()
+    {
+        var totals = await _service.GetTotalCommandesAsync();
+        return Ok(totals);
+    }
 }
