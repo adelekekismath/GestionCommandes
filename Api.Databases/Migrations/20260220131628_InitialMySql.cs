@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Api.Databases.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class InitialMySql : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -56,7 +56,8 @@ namespace Api.Databases.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nom = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Nom = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -230,16 +231,14 @@ namespace Api.Databases.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NumeroCommande = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateCommande = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    MontantTotal = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     Statut = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ClientId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Commandes", x => x.Id);
-                    table.CheckConstraint("CK_Commande_Statut_Valid", "STATUT IN ('EnAttente', 'EnCours', 'Livrée', 'Annulée', 'Expédiée')");
+                    table.CheckConstraint("CK_Commande_Statut_Valid", "STATUT IN ('EnAttente', 'EnCours', 'Livree', 'Annulee', 'Expediee')");
                     table.ForeignKey(
                         name: "FK_Commandes_Clients_ClientId",
                         column: x => x.ClientId,

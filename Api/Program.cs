@@ -24,6 +24,8 @@ using Microsoft.AspNetCore.Authorization;
 using Api.ViewModel.Validation;
 using Api.Domain.Entities;
 using Api.Application.Services.Dashboard;
+using Microsoft.EntityFrameworkCore; 
+using Microsoft.Extensions.DependencyInjection;
 
 [assembly: InternalsVisibleTo("Api.Tests")]
 
@@ -47,8 +49,10 @@ else
 {
     builder.Services.AddDbContext<AppDbContext>(options =>
         {
-            options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-            // options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+           options.UseMySql(
+                builder.Configuration.GetConnectionString("DefaultConnection"),
+                ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
+            );
         }
     );
 }
@@ -156,6 +160,21 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<AppDbContext>();
+        context.Database.Migrate();
+        Console.WriteLine("--> Migrations appliquées avec succès sur MySQL !");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"--> Erreur lors des migrations : {ex.Message}");
+    }
+}
 
 using (var scope = app.Services.CreateScope())
 {
